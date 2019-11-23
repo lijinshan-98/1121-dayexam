@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 对应的是接口的全名 -->
+<mapper namespace="com.ljs.dubbo.mapper.UserMapper">
+ 	<select id="getlist" resultMap="rm" parameterType="map">
+ 		 select u.*,t.tname from 1122_user u left join 1122_type t on u.tid=t.tid 
+ 		 <where>
+ 		 <if test="cname != null and cname !=''">
+ 		 	and u.uname like '%${cname}%'
+ 		 </if>
+ 		
+ 		 <if test="doing != null and doing !=''">
+ 		 	and u.udoing like '%${doing}%'
+ 		 </if>
+ 		 <if test="people != null and people !=''">
+ 		 	and u.upeople like '%${people}%'
+ 		 </if>
+ 		 </where>
+ 		 limit #{cpage},#{size}
+ 		 
+ 	</select>
+ 	<resultMap type="com.ljs.dubbo.bean.User" id="rm">
+ 		<id property="uid" column="uid"/>
+ 		<id property="tid" column="tid"/>
+ 		<result property="uname" column="uname"/>
+ 		<result property="udoing" column="udoing"/>
+ 		<result property="unum" column="unum"/>
+ 		<result property="uover" column="uover"/>
+ 		<result property="upeople" column="upeople"/>
+ 		<association property="tp" javaType="com.ljs.dubbo.bean.Types">
+ 			<id property="tid" column="tid"/>
+ 			<result property="tname" column="tname"/>
+ 		</association>
+ 	</resultMap>
+ 	<insert id="add" parameterType="com.ljs.dubbo.bean.User">
+ 		insert into 1122_user values(null,#{uname},#{udoing},#{unum},#{uover},#{upeople},#{tid})
+ 	</insert>
+ 	<delete id="deleteOne" parameterType="com.ljs.dubbo.bean.Spe">
+ 		delete from 1122_user where uid=#{id}
+ 		 
+ 	</delete>
+ 	<select id="getcount" resultType="int">
+ 		select count(*) from 1122_user u 
+ 		<where>
+ 		<if test="cname != null and cname !=''">
+ 		 	 u.uname like '%${cname}%'
+ 		 </if>
+ 		 <if test="doing != null and doing !=''">
+ 		 	and u.udoing like '%${doing}%'
+ 		 </if>
+ 		 <if test="people != null and people !=''">
+ 		 	and u.upeople like '%${people}%'
+ 		 </if>
+ 		</where>
+ 	</select>
+ 	<select id="findUplist" resultMap="rm" parameterType="com.ljs.dubbo.bean.Spe">
+ 		select u.*,t.tname from 1122_user u,1122_type t where u.tid=t.tid  and uid=#{id}
+ 	</select>
+ 	<update id="update" parameterType="com.ljs.dubbo.bean.User">
+ 		update 1122_user set uname=#{uname},udoing=#{udoing},unum=#{unum},
+ 			uover=#{uover},upeople=#{upeople},tid=#{tid} where
+ 			uid=#{uid}
+ 	</update>
+</mapper>
