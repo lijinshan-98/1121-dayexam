@@ -3,8 +3,12 @@ package com.ljs.dubbo.serviceImp;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import com.ljs.dubbo.bean.Spe;
@@ -20,8 +24,9 @@ public class UserServiceImp implements UserService{
 	
 	@Override
 	public List<User> getlist(Map<String, Object> map) {
-		// TODO Auto-generated method stub
+		
 		return mapper.getlist(map);
+	
 	}
 	@Override
 	public int add(User user) {
